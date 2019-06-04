@@ -3,10 +3,16 @@
 
 (provide update-plusf
          update-plusp
-         init-board)
+         init-board
+         get-color-string)
 
 (define color-list '(blue green red))
 (define color-stream (sequence->stream (in-cycle '(blue green red))))
+(define color-strings (make-immutable-hash '((blue  . "blue")
+                                             (red   . "red")
+                                             (green . "green"))))
+(define (get-color-string color)
+  (hash-ref color-strings color))
   
 (define (empty-board size)
   (make-list size (make-list size 'blue)))
@@ -48,6 +54,9 @@
   (define real-y y);;(+ (- boundary y) 1)) ;; to reverse the y coordinates
   (define real-x x)
   (if (and (<= x boundary) (<= y boundary))
+      ;; would be cool to write a cond-append macro
+      ;; that took a list of conditions and lists and appended the list
+      ;; in order for each condition that evaluated to true
       (let* ([top-list (if (<= (- real-y 1) 0)
                            (get-until-one-before board real-y)
                            (append (get-until-one-before board real-y)

@@ -1,18 +1,19 @@
 #lang racket
 (require "board.rkt")
+(require racket/gui/base)
+
+(define SIZE   4)
+(define CLICKS 4)
+
+(define frame (new frame% [label "Reverser"]))
 
 ;;TODO change to GUI
 
-(define SIZE   4)
-(define CLICKS 3)
 
-(define color-strings (make-immutable-hash '((blue  . "blue  ")
-                                             (red   . " red  ")
-                                             (green . "green "))))
 (define (print-board board)
   (for-each (lambda (line)
               (for-each
-               (lambda (color) (display (hash-ref color-strings color)))
+               (lambda (color) (display (get-color-string color)))
                line)
               (displayln ""))
             board))
